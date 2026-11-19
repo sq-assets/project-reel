@@ -1,0 +1,31 @@
+/* Project Reel: sideways-scrolling project gallery with hover info panels */
+.rl-scene{position:relative}
+.rl-scene>.page-section{position:sticky!important;top:var(--header-bottom,0px)}
+.rl-on{position:relative}
+.rl-on>.content-wrapper{position:relative;z-index:1}
+.rl-layer{position:absolute;inset:0;z-index:2;overflow:hidden;pointer-events:none;color:var(--rl-color,inherit)}
+.rl-track{position:absolute;left:0;top:var(--rl-y,14%);display:flex;align-items:flex-start;gap:var(--rl-gap,32px);padding:0 var(--rl-pad,5vw);will-change:transform}
+.rl-item{flex:none;width:var(--rl-w,30vh);pointer-events:auto;transition:opacity .35s ease;cursor:default}
+.rl-dim .rl-item{opacity:var(--rl-dim,.35)}
+.rl-dim .rl-item.on{opacity:1}
+.rl-frame{display:block;position:relative;overflow:hidden;height:var(--rl-h,48vh);border-radius:var(--rl-radius,0);border:var(--rl-border,0);box-sizing:border-box;background:rgba(0,0,0,.04)}
+.rl-frame img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .7s cubic-bezier(.2,.7,.2,1)}
+.rl-item.on .rl-frame img{transform:scale(var(--rl-zoom,1.04))}
+a.rl-frame{cursor:pointer}
+.rl-cap{display:flex;gap:.7em;align-items:baseline;margin:12px 0 0;font-family:var(--rl-font,inherit);font-size:var(--rl-ts,.78rem);line-height:1.3;letter-spacing:.08em;text-transform:var(--rl-case,uppercase)}
+.rl-num{opacity:.45;font-variant-numeric:tabular-nums}
+.rl-title{margin:0}
+.rl-info{display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows .45s cubic-bezier(.2,.7,.2,1),opacity .3s ease}
+.rl-info>div{overflow:hidden;min-height:0}
+.rl-item.on .rl-info,.rl-always .rl-info{grid-template-rows:1fr;opacity:1}
+.rl-ex{margin:10px 0 0!important;font-size:var(--rl-xs,.9rem)!important;line-height:1.5!important;letter-spacing:0!important}
+.rl-tags{margin:10px 0 0!important;font-size:.68rem!important;letter-spacing:.12em!important;text-transform:uppercase;opacity:.55}
+.rl-more{display:inline-block;margin:12px 0 2px;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;text-decoration:none!important;color:var(--rl-accent,inherit)!important;border-bottom:1px solid currentColor;padding-bottom:2px}
+/* phones / touch: a swipeable row, info always open */
+.rl-mobile .rl-layer{position:relative;inset:auto;overflow:visible}
+.rl-mobile .rl-track{position:relative;top:0;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:0 var(--rl-pad,5vw) 8px;scroll-padding:0 var(--rl-pad,5vw);transform:none!important;width:100%;box-sizing:border-box}
+.rl-mobile .rl-track::-webkit-scrollbar{display:none}
+.rl-mobile .rl-item{scroll-snap-align:start;opacity:1!important;width:var(--rl-wm,78vw)}
+.rl-mobile .rl-frame{height:auto;aspect-ratio:var(--rl-ratio-m,4/5)}
+body.sqs-edit-mode-active .rl-layer{display:none}
+.rl-on:not(.rl-mobile){min-height:calc(100vh - var(--header-bottom,0px))}
