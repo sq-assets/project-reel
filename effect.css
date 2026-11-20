@@ -35,6 +35,7 @@ a.rl-frame{cursor:pointer}
 .rl-layer.rl-inblock{inset:auto;top:0;left:0;height:100%;width:100%;overflow:visible;clip-path:inset(-200vh 0 -200vh 0)}
 .rl-inblock .rl-track{top:0;padding:0 var(--rl-pad,0)}
 body.sqs-edit-mode-active .rl-layer{display:none}
-body.sqs-edit-mode-active .reel{min-height:80px;height:100%;display:flex;align-items:center;justify-content:center;outline:1px dashed rgba(0,0,0,.35);outline-offset:-1px}
-body.sqs-edit-mode-active .reel:before{content:'PROJECT REEL';font:11px/1 sans-serif;letter-spacing:.15em;opacity:.55}
+body.sqs-edit-mode-active .rl-host{outline:1px dashed rgba(0,0,0,.35);outline-offset:-1px}
+body.sqs-edit-mode-active .reel{min-height:60px}
+body.sqs-edit-mode-active .rl-host .reel:before{content:'PROJECT REEL';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font:11px/1 sans-serif;letter-spacing:.15em;opacity:.55;pointer-events:none}
 .rl-on:not(.rl-mobile){min-height:calc(100vh - var(--header-bottom,0px))}

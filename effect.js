@@ -15,8 +15,7 @@ document.querySelectorAll('.reel').forEach(async row=>{
   const INFO=(ds.info||'hover').toLowerCase(),LINK=!off('link'),NEWTAB=on('linkNewTab');
   const FIT=(ds.fit||'block').toLowerCase()==='section'?'section':'block',BLEED=on('bleed');
   const host=FIT==='block'?(row.closest('.fe-block')||row.parentElement):sec;if(FIT==='block')host.classList.add('rl-host');
-  const VARY=on('vary'),AMT=clamp(num(ds.varyAmount,.3),0,.9),AL={top:0,center:.5,middle:.5,bottom:1}[(ds.align||'bottom').toLowerCase()];
-  const PAT=[0,.7,.3,1,.15,.55,.85,.4];
+    const PAT=[0,.7,.3,1,.15,.55,.85,.4];
   row.innerHTML='';sec.classList.add('rl-on');
   const layer=document.createElement('div');layer.className='rl-layer';
   const track=document.createElement('div');track.className='rl-track';layer.append(track);
@@ -30,7 +29,7 @@ document.querySelectorAll('.reel').forEach(async row=>{
   const DIM=ds.dim==='off'?null:num(ds.dim,.35);if(DIM!=null)css('--rl-dim',DIM);
   if(INFO==='always')layer.classList.add('rl-always');
   const H=()=>{const hv=String(ds.height||'').trim();
-    if(FIT==='block'&&(!hv||hv==='fill')){const c=track.querySelector('.rl-cap');const ch=c?c.offsetHeight+parseFloat(getComputedStyle(c).marginTop):0;return Math.max(60,host.clientHeight-ch)}
+    if(FIT==='block'&&(!hv||hv==='fill')){const ch=Math.max(0,...[...track.querySelectorAll('.rl-cap')].map(c=>c.offsetHeight+parseFloat(getComputedStyle(c).marginTop)));return Math.max(60,host.clientHeight-ch)}
     return /px$/.test(hv)?parseFloat(hv):num(hv,48)*innerHeight/100};
   const ratio=(()=>{const r=(ds.ratio||'auto').split('/').map(Number);return r.length===2&&r[0]&&r[1]?r[0]/r[1]:null})();
   const img=u=>/\.(gif|webp)$/i.test(u.split('?')[0])?u:u+'?format=1000w';
@@ -65,6 +64,7 @@ document.querySelectorAll('.reel').forEach(async row=>{
     if(mob){cards.forEach((c,i)=>{c.style.width=c.style.marginTop=frames[i].style.height=''});return}
     if(FIT==='block'){const o=BLEED?host.getBoundingClientRect().left-sec.getBoundingClientRect().left:0;
       layer.style.left=-o+'px';layer.style.width=(BLEED?sec.clientWidth:host.clientWidth)+'px';if(BLEED&&!ds.padding)layer.style.setProperty('--rl-pad',o+'px')}
+    const VARY=on('vary'),AMT=clamp(num(ds.varyAmount,.3),0,.9),AL={top:0,center:.5,middle:.5,bottom:1}[(ds.align||'bottom').toLowerCase()];
     const mh=H();
     cards.forEach((c,i)=>{const h=mh*(VARY?1-AMT*PAT[i%PAT.length]:1);
       frames[i].style.height=h.toFixed(1)+'px';c.style.width=(h*(c.ar||num(ds.fallbackRatio,.8))).toFixed(1)+'px';c.style.marginTop=((mh-h)*(AL??1)).toFixed(1)+'px'});
