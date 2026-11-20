@@ -15,6 +15,29 @@ By default the reel lives **inside the Code Block**: drag and resize the block i
 | `data-vary-amount` | How different the sizes get (0.3 = smallest is 30% smaller) |
 | `data-align` | With variation: line images up along the `bottom` (default), `top` or `center` |
 
+
+## Grow into the post (new in v1.2)
+Click an image and it grows from its spot to fill the screen, then the blog post opens with that same image full screen at the top and the post text scrolling up beneath it.
+
+1. **Footer:** as above. On by default (`data-open="grow"`); set `data-open="link"` for plain links. `data-grow-speed` = how long the grow takes in ms (800).
+2. **Header** (Settings → Developer tools → Code injection → Header), so the post page is ready before it shows:
+
+```html
+<!-- Project Reel: full-screen image at the top of gallery posts -->
+<script src="https://cdn.jsdelivr.net/gh/sq-assets/project-reel@v1.2.0/post.js"
+  data-collections="/gallery"
+  data-parallax="0.35"
+  data-hide-image="on"></script>
+```
+
+| Setting | What it does |
+|---|---|
+| `data-collections` | Which blogs get the full-screen image on their posts, comma separated |
+| `data-parallax` | How much slower the image scrolls than the text (`0.35`); `off` = scrolls normally |
+| `data-hide-image` | `on` = hide the post's own copy of the same image so it isn't shown twice |
+
+Links that go elsewhere (a Source URL on another site, or `data-link-new-tab="on"`) open normally. Works best with a transparent header over the top of the page.
+
 ## Content
 A blog, one post per project:
 - **Thumbnail:** the image (its focal point is respected)
@@ -26,8 +49,8 @@ A blog, one post per project:
 ## Install
 **Footer** (Settings → Developer tools → Code injection → Footer):
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sq-assets/project-reel@v1.1.1/effect.css">
-<script src="https://cdn.jsdelivr.net/gh/sq-assets/project-reel@v1.1.1/effect.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sq-assets/project-reel@v1.2.0/effect.css">
+<script src="https://cdn.jsdelivr.net/gh/sq-assets/project-reel@v1.2.0/effect.js"></script>
 ```
 
 **Code Block** in the section (set the section to fill the screen):

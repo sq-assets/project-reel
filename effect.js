@@ -16,6 +16,19 @@ document.querySelectorAll('.reel').forEach(async row=>{
   const FIT=(ds.fit||'block').toLowerCase()==='section'?'section':'block',BLEED=on('bleed');
   const host=FIT==='block'?(row.closest('.fe-block')||row.parentElement):sec;if(FIT==='block')host.classList.add('rl-host');
     const PAT=[0,.7,.3,1,.15,.55,.85,.4];
+  /* click an image: it grows to fill the screen, then the post opens (post.js picks it up) */
+  const OPEN=(ds.open||'grow').toLowerCase(),GMS=num(ds.growSpeed,800);let growing=0;
+  const grow=(fr,im,it,url)=>{if(growing)return;growing=1;
+    const r=fr.getBoundingClientRect(),big=it.assetUrl.split('?')[0]+'?format=2500w';
+    try{sessionStorage.setItem('rl-arrive',JSON.stringify({url:new URL(url,location.href).pathname,src:big,pos:im.style.objectPosition||'50% 50%',t:Date.now()}))}catch(e){}
+    const g=document.createElement('div'),gi=new Image();g.className='rl-grow';gi.src=im.currentSrc||im.src;gi.style.objectPosition=im.style.objectPosition;g.append(gi);
+    g.style.cssText='top:'+r.top+'px;left:'+r.left+'px;width:'+r.width+'px;height:'+r.height+'px;border-radius:'+getComputedStyle(fr).borderRadius+';--rl-gms:'+GMS+'ms';
+    document.body.append(g);const pre=new Image();pre.onload=()=>{gi.src=big};pre.src=big;
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{g.style.top=g.style.left='0px';g.style.width=innerWidth+'px';g.style.height=innerHeight+'px';g.style.borderRadius='0px'}));
+    let done=0;const go=()=>{if(!done){done=1;location.href=url}};
+    g.addEventListener('transitionend',e=>{if(e.propertyName==='height')go()});setTimeout(go,GMS+400)};
+  addEventListener('pageshow',()=>{document.querySelectorAll('.rl-grow').forEach(n=>n.remove());growing=0});
+  const isPost=(it,url)=>!NEWTAB&&OPEN==='grow'&&it.assetUrl&&new URL(url,location.href).origin===location.origin;
   row.innerHTML='';sec.classList.add('rl-on');
   const layer=document.createElement('div');layer.className='rl-layer';
   const track=document.createElement('div');track.className='rl-track';layer.append(track);
@@ -49,6 +62,9 @@ document.querySelectorAll('.reel').forEach(async row=>{
       if(LINK&&!off('more')){const a=document.createElement('a');a.className='rl-more';a.href=url;a.textContent=ds.linkText||'View project';if(NEWTAB){a.target='_blank';a.rel='noopener'}inner.append(a)}
       box.append(inner);el.append(box)}
     el.ar=ratio;if(!ratio)im.addEventListener('load',()=>{if(im.naturalWidth){el.ar=im.naturalWidth/im.naturalHeight;size()}},{once:true});
+    if(LINK&&isPost(it,url)){let pf=0;
+      el.addEventListener('pointerenter',()=>{if(pf)return;pf=1;const l=document.createElement('link');l.rel='prefetch';l.href=url;document.head.append(l)});
+      el.querySelectorAll('a').forEach(a=>a.addEventListener('click',e=>{if(e.metaKey||e.ctrlKey||e.shiftKey||e.button)return;e.preventDefault();grow(fr,im,it,url)}))}
     track.append(el);return el});
   /* hover: open one panel at a time, dim the rest */
   let openT=null;
