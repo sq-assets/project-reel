@@ -13,6 +13,10 @@ document.querySelectorAll('.reel').forEach(async row=>{
   if(!items.length)return;
   const on=k=>(ds[k]||'').toLowerCase()==='on',off=k=>(ds[k]||'').toLowerCase()==='off';
   const INFO=(ds.info||'hover').toLowerCase(),LINK=!off('link'),NEWTAB=on('linkNewTab');
+  const FIT=(ds.fit||'block').toLowerCase()==='section'?'section':'block',BLEED=on('bleed');
+  const host=FIT==='block'?(row.closest('.fe-block')||row.parentElement):sec;if(FIT==='block')host.classList.add('rl-host');
+  const VARY=on('vary'),AMT=clamp(num(ds.varyAmount,.3),0,.9),AL={top:0,center:.5,middle:.5,bottom:1}[(ds.align||'bottom').toLowerCase()];
+  const PAT=[0,.7,.3,1,.15,.55,.85,.4];
   row.innerHTML='';sec.classList.add('rl-on');
   const layer=document.createElement('div');layer.className='rl-layer';
   const track=document.createElement('div');track.className='rl-track';layer.append(track);
@@ -25,7 +29,9 @@ document.querySelectorAll('.reel').forEach(async row=>{
   if((ds.uppercase||'on')==='off')css('--rl-case','none');
   const DIM=ds.dim==='off'?null:num(ds.dim,.35);if(DIM!=null)css('--rl-dim',DIM);
   if(INFO==='always')layer.classList.add('rl-always');
-  const H=()=>num(ds.height,48)*innerHeight/100;
+  const H=()=>{const hv=String(ds.height||'').trim();
+    if(FIT==='block'&&(!hv||hv==='fill')){const c=track.querySelector('.rl-cap');const ch=c?c.offsetHeight+parseFloat(getComputedStyle(c).marginTop):0;return Math.max(60,host.clientHeight-ch)}
+    return /px$/.test(hv)?parseFloat(hv):num(hv,48)*innerHeight/100};
   const ratio=(()=>{const r=(ds.ratio||'auto').split('/').map(Number);return r.length===2&&r[0]&&r[1]?r[0]/r[1]:null})();
   const img=u=>/\.(gif|webp)$/i.test(u.split('?')[0])?u:u+'?format=1000w';
   const cards=items.map((it,i)=>{
@@ -49,16 +55,20 @@ document.querySelectorAll('.reel').forEach(async row=>{
   let openT=null;
   const open=el=>{clearTimeout(openT);cards.forEach(c=>c.classList.toggle('on',c===el));layer.classList.toggle('rl-dim',!!el&&DIM!=null)};
   cards.forEach(el=>{el.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse')open(el)});el.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse')openT=setTimeout(()=>open(null),120)})});
-  sec.append(layer);if(sec.querySelectorAll('.fe-block').length<2)sec.classList.add('rl-solo');
+  (FIT==='block'?host:sec).append(layer);if(sec.querySelectorAll('.fe-block').length<2)sec.classList.add('rl-solo');
   /* layout and scroll */
   let W=0,D=0,len=0,cur=0,tgt=0,raf=null,mob=null;
   const scene=document.createElement('div');scene.className='rl-scene';
   const hb=()=>parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header-bottom'))||0;
   const size=()=>{
-    if(mob){cards.forEach(c=>c.style.width='');return}
-    const h=H();layer.style.setProperty('--rl-h',h+'px');
-    cards.forEach(c=>{c.style.width=(h*(c.ar||num(ds.fallbackRatio,.8))).toFixed(1)+'px'});
-    W=sec.clientWidth;D=Math.max(0,track.scrollWidth-W);len=D/(innerHeight*num(ds.speed,1));
+    const frames=cards.map(c=>c.querySelector('.rl-frame'));
+    if(mob){cards.forEach((c,i)=>{c.style.width=c.style.marginTop=frames[i].style.height=''});return}
+    if(FIT==='block'){const o=BLEED?host.getBoundingClientRect().left-sec.getBoundingClientRect().left:0;
+      layer.style.left=-o+'px';layer.style.width=(BLEED?sec.clientWidth:host.clientWidth)+'px';if(BLEED&&!ds.padding)layer.style.setProperty('--rl-pad',o+'px')}
+    const mh=H();
+    cards.forEach((c,i)=>{const h=mh*(VARY?1-AMT*PAT[i%PAT.length]:1);
+      frames[i].style.height=h.toFixed(1)+'px';c.style.width=(h*(c.ar||num(ds.fallbackRatio,.8))).toFixed(1)+'px';c.style.marginTop=((mh-h)*(AL??1)).toFixed(1)+'px'});
+    W=layer.clientWidth;D=Math.max(0,track.scrollWidth-W);len=D/(innerHeight*num(ds.speed,1));
     if(scene.isConnected)scene.style.height=(sec.getBoundingClientRect().height+innerHeight*len+innerHeight*num(ds.hold,.3))+'px';
     update();paint()};
   const paint=()=>{if(mob)return;const p=len?clamp(cur/len):0;track.style.transform='translateX('+(-D*p).toFixed(1)+'px)'};
@@ -66,7 +76,7 @@ document.querySelectorAll('.reel').forEach(async row=>{
   const update=()=>{if(mob||!scene.isConnected)return;tgt=clamp((hb()-scene.getBoundingClientRect().top)/innerHeight,0,len);if(!raf)raf=requestAnimationFrame(tick)};
   const mode=()=>{
     const edit=document.body.classList.contains('sqs-edit-mode-active');const m=isMob();
-    if(m!==mob){mob=m;layer.classList.toggle('rl-mobile',m);sec.classList.toggle('rl-mobile',m);if(m){track.style.transform='';layer.classList.add('rl-always')}else if(INFO!=='always')layer.classList.remove('rl-always')}
+    if(m!==mob){mob=m;layer.classList.toggle('rl-inblock',FIT==='block'&&!m);(m||FIT==='section'?sec:host).append(layer);if(m){layer.style.left=layer.style.width=''}layer.classList.toggle('rl-mobile',m);sec.classList.toggle('rl-mobile',m);if(m){track.style.transform='';layer.classList.add('rl-always')}else if(INFO!=='always')layer.classList.remove('rl-always')}
     const want=!edit&&!mob;
     if(!want&&scene.isConnected){scene.replaceWith(sec)}
     if(want&&!scene.isConnected){sec.before(scene);scene.append(sec)}
@@ -74,6 +84,6 @@ document.querySelectorAll('.reel').forEach(async row=>{
   if(mob===null)mode();
   new MutationObserver(mode).observe(document.body,{attributes:true,attributeFilter:['class']});
   addEventListener('scroll',update,{passive:true});
-  addEventListener('resize',mode);addEventListener('load',size);
+  addEventListener('resize',mode);if(window.ResizeObserver&&FIT==='block'){let q;new ResizeObserver(()=>{cancelAnimationFrame(q);q=requestAnimationFrame(size)}).observe(host)}addEventListener('load',size);
   if(document.fonts)document.fonts.ready.then(size);
 });

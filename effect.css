@@ -30,5 +30,11 @@ a.rl-frame{cursor:pointer}
 .rl-mobile .rl-track::-webkit-scrollbar{display:none}
 .rl-mobile .rl-item{scroll-snap-align:start;opacity:1!important;width:var(--rl-wm,78vw)}
 .rl-mobile .rl-frame{height:auto;aspect-ratio:var(--rl-ratio-m,4/5)}
+/* inside the Code Block (default): drag/resize the block to place it */
+.rl-host{position:relative;z-index:5}
+.rl-layer.rl-inblock{inset:auto;top:0;left:0;height:100%;width:100%;overflow:visible;clip-path:inset(-200vh 0 -200vh 0)}
+.rl-inblock .rl-track{top:0;padding:0 var(--rl-pad,0)}
 body.sqs-edit-mode-active .rl-layer{display:none}
+body.sqs-edit-mode-active .reel{min-height:80px;height:100%;display:flex;align-items:center;justify-content:center;outline:1px dashed rgba(0,0,0,.35);outline-offset:-1px}
+body.sqs-edit-mode-active .reel:before{content:'PROJECT REEL';font:11px/1 sans-serif;letter-spacing:.15em;opacity:.55}
 .rl-on:not(.rl-mobile){min-height:calc(100vh - var(--header-bottom,0px))}

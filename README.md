@@ -2,6 +2,19 @@
 
 A sleek, minimal project gallery for Squarespace 7.1 (Fluid Engine). The section pins and a row of images slides sideways as visitors scroll down. Hover an image and a panel opens underneath it with the project's details, pulled from the blog post. On phones it becomes a swipeable row with the details showing.
 
+
+## Placing it (new in v1.1)
+By default the reel lives **inside the Code Block**: drag and resize the block in Fluid Engine to place it, e.g. along the bottom of the screen. The images fill the block's height (minus the caption) and slide within its width. In Edit mode the block shows a dashed "PROJECT REEL" placeholder.
+
+| Setting | What it does |
+|---|---|
+| `data-fit` | `block` (default) = inside the Code Block, `section` = the old full-section overlay |
+| `data-bleed` | `on` = images slide in from/off the screen edges instead of being cropped at the block's sides (first image still lines up with the block) |
+| `data-height` | `fill` (default) = fill the block, or a size: `40` (% of screen height) or `320px` |
+| `data-vary` | `on` = mixed image sizes, `off` = all the same |
+| `data-vary-amount` | How different the sizes get (0.3 = smallest is 30% smaller) |
+| `data-align` | With variation: line images up along the `bottom` (default), `top` or `center` |
+
 ## Content
 A blog, one post per project:
 - **Thumbnail:** the image (its focal point is respected)
@@ -13,8 +26,8 @@ A blog, one post per project:
 ## Install
 **Footer** (Settings → Developer tools → Code injection → Footer):
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sq-assets/project-reel@v1.0.1/effect.css">
-<script src="https://cdn.jsdelivr.net/gh/sq-assets/project-reel@v1.0.1/effect.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sq-assets/project-reel@v1.1.0/effect.css">
+<script src="https://cdn.jsdelivr.net/gh/sq-assets/project-reel@v1.1.0/effect.js"></script>
 ```
 
 **Code Block** in the section (set the section to fill the screen):
