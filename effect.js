@@ -49,7 +49,7 @@ document.querySelectorAll('.reel').forEach(async row=>{
   let openT=null;
   const open=el=>{clearTimeout(openT);cards.forEach(c=>c.classList.toggle('on',c===el));layer.classList.toggle('rl-dim',!!el&&DIM!=null)};
   cards.forEach(el=>{el.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse')open(el)});el.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse')openT=setTimeout(()=>open(null),120)})});
-  sec.append(layer);
+  sec.append(layer);if(sec.querySelectorAll('.fe-block').length<2)sec.classList.add('rl-solo');
   /* layout and scroll */
   let W=0,D=0,len=0,cur=0,tgt=0,raf=null,mob=null;
   const scene=document.createElement('div');scene.className='rl-scene';

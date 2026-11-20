@@ -24,6 +24,7 @@ a.rl-frame{cursor:pointer}
 /* phones / touch: a swipeable row, info always open */
 .rl-mobile.page-section{flex-wrap:wrap}
 .rl-mobile>.content-wrapper,.rl-mobile .rl-layer{flex:0 0 100%;width:100%;max-width:100%}
+.rl-mobile.rl-solo>.content-wrapper{display:none}
 .rl-mobile .rl-layer{position:relative;inset:auto;overflow:visible}
 .rl-mobile .rl-track{position:relative;top:0;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:0 var(--rl-pad,5vw) 8px;scroll-padding:0 var(--rl-pad,5vw);transform:none!important;width:100%;box-sizing:border-box}
 .rl-mobile .rl-track::-webkit-scrollbar{display:none}
