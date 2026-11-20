@@ -26,8 +26,8 @@ A blog, one post per project:
 ## Install
 **Footer** (Settings → Developer tools → Code injection → Footer):
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sq-assets/project-reel@v1.1.0/effect.css">
-<script src="https://cdn.jsdelivr.net/gh/sq-assets/project-reel@v1.1.0/effect.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sq-assets/project-reel@v1.1.1/effect.css">
+<script src="https://cdn.jsdelivr.net/gh/sq-assets/project-reel@v1.1.1/effect.js"></script>
 ```
 
 **Code Block** in the section (set the section to fill the screen):
