@@ -17,7 +17,7 @@ document.querySelectorAll('.reel').forEach(async row=>{
   const host=FIT==='block'?(row.closest('.fe-block')||row.parentElement):sec;if(FIT==='block')host.classList.add('rl-host');
     const PAT=[0,.7,.3,1,.15,.55,.85,.4];
   /* click an image: it grows to fill the screen, then the post opens (post.js picks it up) */
-  const OPEN=(ds.open||'grow').toLowerCase(),GMS=num(ds.growSpeed,800);let growing=0;
+  const OPEN=(ds.open||'grow').toLowerCase(),GMS=num(ds.growSpeed,1400);let growing=0;
   const grow=(fr,im,it,url)=>{if(growing)return;growing=1;
     const r=fr.getBoundingClientRect(),big=it.assetUrl.split('?')[0]+'?format=2500w';
     try{sessionStorage.setItem('rl-arrive',JSON.stringify({url:new URL(url,location.href).pathname,src:big,pos:im.style.objectPosition||'50% 50%',t:Date.now()}))}catch(e){}
@@ -27,6 +27,8 @@ document.querySelectorAll('.reel').forEach(async row=>{
     requestAnimationFrame(()=>requestAnimationFrame(()=>{g.style.top=g.style.left='0px';g.style.width=innerWidth+'px';g.style.height=innerHeight+'px';g.style.borderRadius='0px'}));
     let done=0;const go=()=>{if(!done){done=1;location.href=url}};
     g.addEventListener('transitionend',e=>{if(e.propertyName==='height')go()});setTimeout(go,GMS+400)};
+  /* page-to-page crossfade (Chrome/Safari): the full-screen image stays on screen while the post loads */
+  if(OPEN==='grow'&&!document.getElementById('rl-vt')){const v=document.createElement('style');v.id='rl-vt';v.textContent='@view-transition{navigation:auto}::view-transition-group(root){animation-duration:.6s}';document.head.append(v)}
   addEventListener('pageshow',()=>{document.querySelectorAll('.rl-grow').forEach(n=>n.remove());growing=0});
   const isPost=(it,url)=>!NEWTAB&&OPEN==='grow'&&it.assetUrl&&new URL(url,location.href).origin===location.origin;
   row.innerHTML='';sec.classList.add('rl-on');
