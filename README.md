@@ -32,19 +32,19 @@ Click an image and it grows from its spot to fill the screen, then the blog post
   data-back-text="Back"
   data-back-url="/"
   data-back-position="top-left"
-  data-back-position-mobile="bottom-left"
-  data-back-blend="on"></script>
+  data-back-style="button"></script>
 ```
 
 | Setting | What it does |
 |---|---|
 | `data-collections` | Which blogs get the full-screen image on their posts, comma separated |
 | `data-parallax` | How much slower the image scrolls than the text (`0.35`); `off` = scrolls normally |
-| `data-back` | `on` = a small "← Back" link on each post. Returns visitors to the same spot in the reel if they came from it, otherwise goes to `data-back-url` |
-| `data-back-text`, `data-back-url` | Link text ("Back") and where it goes (`/`) |
-| `data-back-position` / `-mobile` | `top-left`, `top-right`, `bottom-left`, `bottom-right` (phones default `bottom-left`, clear of the logo) |
-| `data-back-blend` | `on` = white text that inverts against what's behind it, so it reads over photos and plain backgrounds. `off` + `data-back-color` for a fixed colour |
-| `data-back-offset`, `data-back-size` | Distance from the edge in px, text size |
+| `data-back` | `on` = a "← Back" button on each post. Returns visitors to the same spot in the reel if they came from it, otherwise goes to `data-back-url` |
+| `data-back-text`, `data-back-url` | Button text ("Back") and where it goes (`/`) |
+| `data-back-style` | `button` (default) = your site's primary button style; `text` = a small plain link (`data-back-blend="on"` makes it invert over photos) |
+| `data-back-position` | `top-left` (default), `top-right`, `bottom-left`, `bottom-right`. On phones, top positions sit just below the header |
+| `data-back-size` | Button size: `small` (default), `medium`, `large` |
+| `data-back-offset`, `data-back-arrow` | Distance from the top in px (24); `off` hides the ← |
 | `data-hide-image` | `on` = hide the post's own copy of the same image so it isn't shown twice |
 
 Links that go elsewhere (a Source URL on another site, or `data-link-new-tab="on"`) open normally. Works best with a transparent header over the top of the page.
