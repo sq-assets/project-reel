@@ -24,7 +24,7 @@ Click an image and it grows from its spot to fill the screen, then the blog post
 
 ```html
 <!-- Project Reel: full-screen image at the top of gallery posts -->
-<script src="https://cdn.jsdelivr.net/gh/sq-assets/project-reel@v1.3.0/post.js"
+<script src="https://cdn.jsdelivr.net/gh/sq-assets/project-reel@v1.4.0/post.js"
   data-collections="/gallery"
   data-parallax="0.35"
   data-hide-image="on"
@@ -32,7 +32,7 @@ Click an image and it grows from its spot to fill the screen, then the blog post
   data-back-text="Back"
   data-back-url="/"
   data-back-position="top-left"
-  data-back-style="button"></script>
+  data-back-style="nav"></script>
 ```
 
 | Setting | What it does |
@@ -41,10 +41,11 @@ Click an image and it grows from its spot to fill the screen, then the blog post
 | `data-parallax` | How much slower the image scrolls than the text (`0.35`); `off` = scrolls normally |
 | `data-back` | `on` = a "← Back" button on each post. Returns visitors to the same spot in the reel if they came from it, otherwise goes to `data-back-url` |
 | `data-back-text`, `data-back-url` | Button text ("Back") and where it goes (`/`) |
-| `data-back-style` | `button` (default) = your site's primary button style; `text` = a small plain link (`data-back-blend="on"` makes it invert over photos) |
-| `data-back-position` | `top-left` (default), `top-right`, `bottom-left`, `bottom-right`. On phones, top positions sit just below the header |
-| `data-back-size` | Button size: `small` (default), `medium`, `large` |
-| `data-back-offset`, `data-back-arrow` | Distance from the top in px (24); `off` hides the ← |
+| `data-back-style` | `nav` (default) = copies your header navigation links (font, size, weight, spacing, caps, colour) and lines up with them; `text` = plain link |
+| `data-back-position` | `top-left` (default) or `top-right`, level with your nav links; `bottom-left`, `bottom-right`. On phones, top positions sit just below the header |
+| `data-back-font`, `data-back-font-size`, `data-back-color`, `data-back-letter-spacing`, `data-back-uppercase` (`on`/`off`), `data-back-hover-color` | Optional overrides. Blank = match the nav |
+| `data-back-blend` | `on` = inverts against whatever's behind it (white text recommended) |
+| `data-back-offset`, `data-back-arrow` | Distance from the top in px (blank = level with the nav); `off` hides the ← |
 | `data-hide-image` | `on` = hide the post's own copy of the same image so it isn't shown twice |
 
 Links that go elsewhere (a Source URL on another site, or `data-link-new-tab="on"`) open normally. Works best with a transparent header over the top of the page.
@@ -60,8 +61,8 @@ A blog, one post per project:
 ## Install
 **Footer** (Settings → Developer tools → Code injection → Footer):
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sq-assets/project-reel@v1.3.0/effect.css">
-<script src="https://cdn.jsdelivr.net/gh/sq-assets/project-reel@v1.3.0/effect.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sq-assets/project-reel@v1.4.0/effect.css">
+<script src="https://cdn.jsdelivr.net/gh/sq-assets/project-reel@v1.4.0/effect.js"></script>
 ```
 
 **Code Block** in the section (set the section to fill the screen):

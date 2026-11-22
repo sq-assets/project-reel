@@ -12,9 +12,9 @@
     '.rlh-img{position:absolute;inset:0;background:center/cover no-repeat;will-change:transform}'+
     '.rlh-in #header,.rlh-in .rlh~*{animation:rlhFade .9s ease both}@keyframes rlhFade{from{opacity:0}to{opacity:1}}'+
     '@view-transition{navigation:auto}::view-transition-group(root){animation-duration:.6s}'+
-    '.rlh-back-wrap{position:fixed!important;z-index:10001;margin:0!important;padding:0!important;width:auto!important}.rlh-back{display:inline-flex;align-items:center;gap:.6em;padding:8px 0;font-family:inherit;font-size:'+(ds.backTextSize||'12px')+';font-weight:500;line-height:1;letter-spacing:.14em;text-transform:uppercase;text-decoration:none!important;color:'+(ds.backColor||'#fff')+'!important;transition:opacity .25s ease}'+
-    '.rlh-back:hover{opacity:.6}.rlh-blend{mix-blend-mode:difference}'+
-    '.rlh-top-left{top:var(--rlh-o);left:var(--rlh-x)}.rlh-back-wrap .sqs-block-content,.rlh-back-wrap .sqs-block-button-container{margin:0!important;padding:0!important}'+'.rlh-top-right{top:var(--rlh-o);right:var(--rlh-x)}.rlh-bottom-left{bottom:var(--rlh-o);left:var(--rlh-x)}.rlh-bottom-right{bottom:var(--rlh-o);right:var(--rlh-x)}'+
+    '.rlh-back-wrap{position:fixed;z-index:100001}.rlh-back{display:inline-flex;align-items:center;gap:.5em;padding:0;text-decoration:none!important;transition:opacity .25s ease,color .25s ease}'+
+    '.rlh-back:hover{opacity:.6}.rlh-back[style*="--rlh-hover"]:hover{opacity:1;color:var(--rlh-hover)!important}.rlh-blend{mix-blend-mode:difference;color:#fff!important}'+
+    '.rlh-top-left{top:var(--rlh-o);left:var(--rlh-x)}.rlh-top-right{top:var(--rlh-o);right:var(--rlh-x)}.rlh-bottom-left{bottom:24px;left:var(--rlh-x)}.rlh-bottom-right{bottom:24px;right:var(--rlh-x)}'+
     'body.sqs-edit-mode-active .rlh-back-wrap{display:none}';
   document.head.append(st);
   const name=s=>(s||'').split('?')[0].split('/').pop();
@@ -29,21 +29,24 @@
     /* hide the post's own copy of the same image */
     if(ds.hideImage!=='off')document.querySelectorAll('article img').forEach(i=>{if(name(i.dataset.src||i.src)===name(src))(i.closest('figure,.image-block-outer-wrapper,.blog-item-image')||i).style.display='none'});
     if(ds.parallax!=='off'){const p=parseFloat(ds.parallax)||.35;addEventListener('scroll',()=>{if(scrollY<innerHeight*1.5)bg.style.transform='translateY('+(scrollY*p).toFixed(1)+'px)'},{passive:true})}
-    /* back button: your primary button style, top left. Returns to the same spot in the reel if that's where they came from */
+    /* back link: styled like your header navigation links, top left, above the header */
     if(ds.back!=='off'){
-      const url=ds.backUrl||'/',pos=ds.backPosition||'top-left',sec=document.querySelector('#sections .page-section:not(.rlh)');
-      const w=document.createElement('div'),a=document.createElement('a'),txt=(ds.backText||'Back');
-      if((ds.backStyle||'button')==='button'&&sec){
-        w.className='rlh-back-wrap sqs-block button-block sqs-block-button';
-        w.innerHTML='<div class="sqs-block-content"><div class="sqs-block-button-container"></div></div>';
-        a.className='sqs-block-button-element--'+(ds.backSize||'small')+' sqs-button-element--primary sqs-block-button-element';
-        w.querySelector('.sqs-block-button-container').append(a);(sec.querySelector('.content')||sec).append(w);
-      }else{w.className='rlh-back-wrap';a.className='rlh-back'+(ds.backBlend==='off'?'':' rlh-blend');w.append(a);document.body.append(w)}
-      a.href=url;a.textContent=(ds.backArrow==='off'?'':'\u2190 ')+txt;w.classList.add('rlh-'+pos);
-      const place=()=>{const mob=innerWidth<768,hd=document.querySelector('#header');
-        const top=mob&&pos.startsWith('top')&&hd?hd.getBoundingClientRect().bottom+12:(parseFloat(ds.backOffset)||24);
-        w.style.setProperty('--rlh-o',Math.max(0,top)+'px');w.style.setProperty('--rlh-x',mob?'6vw':'max(20px,3vw)')};
-      place();addEventListener('resize',place);addEventListener('load',place);
+      const url=ds.backUrl||'/',pos=ds.backPosition||'top-left',w=document.createElement('div'),a=document.createElement('a');
+      w.className='rlh-back-wrap rlh-'+pos;a.className='rlh-back'+(ds.backBlend==='on'?' rlh-blend':'');a.href=url;
+      a.textContent=(ds.backArrow==='off'?'':'\u2190 ')+(ds.backText||'Back');w.append(a);document.body.append(w);
+      const navA=()=>document.querySelector('#header .header-display-desktop .header-nav-item a')||document.querySelector('#header .header-nav-item a');
+      const look=()=>{const n=navA();if(n&&(ds.backStyle||'nav')==='nav'){const cs=getComputedStyle(n);
+          ['fontFamily','fontSize','fontWeight','fontStyle','letterSpacing','textTransform','lineHeight','color'].forEach(k=>a.style[k]=cs[k])}
+        if(ds.backFont)a.style.fontFamily=ds.backFont;if(ds.backFontSize)a.style.fontSize=/^[\d.]+$/.test(ds.backFontSize)?ds.backFontSize+'px':ds.backFontSize;
+        if(ds.backColor)a.style.color=ds.backColor;if(ds.backLetterSpacing)a.style.letterSpacing=ds.backLetterSpacing;
+        if(ds.backUppercase)a.style.textTransform=ds.backUppercase==='on'?'uppercase':'none';if(ds.backHoverColor)a.style.setProperty('--rlh-hover',ds.backHoverColor)};
+      const place=()=>{const mob=innerWidth<768,hd=document.querySelector('#header'),bar=hd&&hd.querySelector('.header-display-desktop'),list=bar&&bar.querySelector('.header-nav-list');
+        let top=parseFloat(ds.backOffset),x;
+        if(isNaN(top))top=mob?(hd?hd.getBoundingClientRect().bottom+12:24):(list&&list.getBoundingClientRect().height?list.getBoundingClientRect().top:24);
+        x=!mob&&bar?bar.getBoundingClientRect().left+parseFloat(getComputedStyle(bar).paddingLeft||0):(mob?innerWidth*.06:24);
+        if(pos.endsWith('right'))x=!mob&&bar?innerWidth-bar.getBoundingClientRect().right+parseFloat(getComputedStyle(bar).paddingRight||0):x;
+        w.style.setProperty('--rlh-o',Math.max(0,top)+'px');w.style.setProperty('--rlh-x',Math.max(0,x)+'px')};
+      const fit=()=>{look();if(scrollY<5)place()};fit();addEventListener('resize',fit);addEventListener('load',fit);if(document.fonts)document.fonts.ready.then(fit);
       a.addEventListener('click',e=>{try{const r=new URL(document.referrer);if(r.origin===location.origin&&r.pathname===new URL(url,location.href).pathname&&history.length>1){e.preventDefault();history.back()}}catch(x){}});
     }
     let shown=false;const show=()=>{if(shown)return;shown=true;if(root.classList.contains('rlh-arriving')){root.classList.remove('rlh-arriving');root.classList.add('rlh-in')}};
