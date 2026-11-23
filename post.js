@@ -53,6 +53,7 @@
         if(isNaN(top))top=mob?(hd?hd.getBoundingClientRect().bottom+12:24):(list&&list.getBoundingClientRect().height?list.getBoundingClientRect().top:24);
         x=!mob&&bar?bar.getBoundingClientRect().left+parseFloat(getComputedStyle(bar).paddingLeft||0):(mob?innerWidth*.06:24);
         if(pos.endsWith('right'))x=!mob&&bar?innerWidth-bar.getBoundingClientRect().right+parseFloat(getComputedStyle(bar).paddingRight||0):x;
+        if(framed&&pill)x=Math.max(x,ins+16);
         w.style.setProperty('--rlh-o',Math.max(0,top)+'px');w.style.setProperty('--rlh-x',Math.max(0,x)+'px')};
       const fit=()=>{look();if(scrollY<5)place()};fit();addEventListener('resize',fit);addEventListener('load',fit);if(document.fonts)document.fonts.ready.then(fit);
       a.addEventListener('click',e=>{try{const r=new URL(document.referrer);if(r.origin===location.origin&&r.pathname===new URL(url,location.href).pathname&&history.length>1){e.preventDefault();history.back()}}catch(x){}});
