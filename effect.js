@@ -37,7 +37,7 @@ document.querySelectorAll('.reel').forEach(async row=>{
   const track=document.createElement('div');track.className='rl-track';layer.append(track);
   const css=(p,v)=>v!=null&&v!==''&&layer.style.setProperty(p,v);
   const px=v=>/^[\d.]+$/.test(String(v))?v+'px':v;
-  css('--rl-y',ds.y&&num(ds.y,14)+'%');css('--rl-ym',ds.yMobile&&num(ds.yMobile,22)+'%');css('--rl-gm',ds.gapMobile&&px(ds.gapMobile));css('--rl-gap',ds.gap&&px(ds.gap));css('--rl-pad',ds.padding);
+  css('--rl-y',ds.y&&num(ds.y,14)+'%');css('--rl-ym',ds.yMobile&&num(ds.yMobile,22)+'%');css('--rl-gm',ds.gapMobile&&px(ds.gapMobile));css('--rl-tsm',ds.titleSizeMobile);css('--rl-gap',ds.gap&&px(ds.gap));css('--rl-pad',ds.padding);
   css('--rl-radius',ds.radius&&px(ds.radius));css('--rl-border',ds.border);css('--rl-color',ds.textColor);css('--rl-accent',ds.linkColor);
   css('--rl-ts',ds.titleSize);css('--rl-xs',ds.textSize);css('--rl-font',ds.fontName&&'"'+ds.fontName+'", var(--heading-font-font-family,sans-serif)');
   css('--rl-zoom',ds.zoom);css('--rl-wm',ds.widthMobile&&num(ds.widthMobile,78)+'vw');css('--rl-ratio-m',ds.ratioMobile);
@@ -47,7 +47,8 @@ document.querySelectorAll('.reel').forEach(async row=>{
   const capH=()=>Math.max(0,...[...track.querySelectorAll('.rl-cap')].map(c=>c.offsetHeight+parseFloat(getComputedStyle(c).marginTop)));
   const phBlock=()=>ph&&FIT==='block'&&!ds.yMobile&&host.getBoundingClientRect().height>0;
   const H=()=>{if(ph){const hm=String(ds.heightMobile||'').trim();
-      if(phBlock()&&(!hm||hm==='fill'))return Math.max(60,host.clientHeight-capH());
+      const minH=num(ds.minHeightMobile,42)*innerHeight/100;
+      if(phBlock()&&(!hm||hm==='fill'))return Math.max(minH,host.clientHeight-capH());
       return /px$/.test(hm)?parseFloat(hm):num(hm,50)*innerHeight/100}
     const hv=String(ds.height||'').trim();
     if(FIT==='block'&&(!hv||hv==='fill'))return Math.max(60,host.clientHeight-capH());

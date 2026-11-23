@@ -24,7 +24,7 @@ Click an image and it grows from its spot to fill the screen, then the blog post
 
 ```html
 <!-- Project Reel: full-screen image at the top of gallery posts -->
-<script src="https://cdn.jsdelivr.net/gh/sq-assets/project-reel@v1.5.1/post.js"
+<script src="https://cdn.jsdelivr.net/gh/sq-assets/project-reel@v1.5.2/post.js"
   data-collections="/gallery"
   data-parallax="0.35"
   data-hide-image="on"
@@ -61,8 +61,8 @@ A blog, one post per project:
 ## Install
 **Footer** (Settings → Developer tools → Code injection → Footer):
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sq-assets/project-reel@v1.5.1/effect.css">
-<script src="https://cdn.jsdelivr.net/gh/sq-assets/project-reel@v1.5.1/effect.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sq-assets/project-reel@v1.5.2/effect.css">
+<script src="https://cdn.jsdelivr.net/gh/sq-assets/project-reel@v1.5.2/effect.js"></script>
 ```
 
 **Code Block** in the section (set the section to fill the screen):
