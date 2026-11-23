@@ -91,8 +91,9 @@ document.querySelectorAll('.reel').forEach(async row=>{
       layer.style.left=-o+'px';layer.style.width=(BLEED?sec.clientWidth:host.clientWidth)+'px';if(BLEED&&!ds.padding)layer.style.setProperty('--rl-pad',o+'px')}
     const VARY=on('vary'),AMT=clamp(num(ds.varyAmount,.3),0,.9),AL={top:0,center:.5,middle:.5,bottom:1}[(ds.align||'bottom').toLowerCase()];
     /* phones: the strip sits where the Code Block is in your phone layout */
-    track.style.top=phBlock()?(host.getBoundingClientRect().top-sec.getBoundingClientRect().top).toFixed(1)+'px':'';
     const mh=H();
+    if(phBlock()){const view=Math.min(sec.clientHeight,innerHeight-hb()),bt=host.getBoundingClientRect().top-sec.getBoundingClientRect().top;
+      track.style.top=Math.max(0,Math.min(bt,view-mh-capH()-16)).toFixed(1)+'px'}else track.style.top='';
     cards.forEach((c,i)=>{const h=mh*(VARY?1-AMT*PAT[i%PAT.length]:1);
       frames[i].style.height=h.toFixed(1)+'px';c.style.width=(h*(c.ar||num(ds.fallbackRatio,.8))).toFixed(1)+'px';c.style.marginTop=((mh-h)*(AL??1)).toFixed(1)+'px'});
     W=layer.clientWidth;D=Math.max(0,track.scrollWidth-W);len=D/(innerHeight*num(ds.speed,1));
