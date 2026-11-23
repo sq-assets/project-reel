@@ -44,8 +44,13 @@ document.querySelectorAll('.reel').forEach(async row=>{
   if((ds.uppercase||'on')==='off')css('--rl-case','none');
   const DIM=ds.dim==='off'?null:num(ds.dim,.35);if(DIM!=null)css('--rl-dim',DIM);
   if(INFO==='always')layer.classList.add('rl-always');
-  const H=()=>{if(ph)return num(ds.heightMobile,50)*innerHeight/100;const hv=String(ds.height||'').trim();
-    if(FIT==='block'&&(!hv||hv==='fill')){const ch=Math.max(0,...[...track.querySelectorAll('.rl-cap')].map(c=>c.offsetHeight+parseFloat(getComputedStyle(c).marginTop)));return Math.max(60,host.clientHeight-ch)}
+  const capH=()=>Math.max(0,...[...track.querySelectorAll('.rl-cap')].map(c=>c.offsetHeight+parseFloat(getComputedStyle(c).marginTop)));
+  const phBlock=()=>ph&&FIT==='block'&&!ds.yMobile&&host.getBoundingClientRect().height>0;
+  const H=()=>{if(ph){const hm=String(ds.heightMobile||'').trim();
+      if(phBlock()&&(!hm||hm==='fill'))return Math.max(60,host.clientHeight-capH());
+      return /px$/.test(hm)?parseFloat(hm):num(hm,50)*innerHeight/100}
+    const hv=String(ds.height||'').trim();
+    if(FIT==='block'&&(!hv||hv==='fill'))return Math.max(60,host.clientHeight-capH());
     return /px$/.test(hv)?parseFloat(hv):num(hv,48)*innerHeight/100};
   const ratio=(()=>{const r=(ds.ratio||'auto').split('/').map(Number);return r.length===2&&r[0]&&r[1]?r[0]/r[1]:null})();
   const img=u=>/\.(gif|webp)$/i.test(u.split('?')[0])?u:u+'?format=1000w';
@@ -84,6 +89,8 @@ document.querySelectorAll('.reel').forEach(async row=>{
     if(FIT==='block'&&!ph){const o=BLEED?host.getBoundingClientRect().left-sec.getBoundingClientRect().left:0;
       layer.style.left=-o+'px';layer.style.width=(BLEED?sec.clientWidth:host.clientWidth)+'px';if(BLEED&&!ds.padding)layer.style.setProperty('--rl-pad',o+'px')}
     const VARY=on('vary'),AMT=clamp(num(ds.varyAmount,.3),0,.9),AL={top:0,center:.5,middle:.5,bottom:1}[(ds.align||'bottom').toLowerCase()];
+    /* phones: the strip sits where the Code Block is in your phone layout */
+    track.style.top=phBlock()?(host.getBoundingClientRect().top-sec.getBoundingClientRect().top).toFixed(1)+'px':'';
     const mh=H();
     cards.forEach((c,i)=>{const h=mh*(VARY?1-AMT*PAT[i%PAT.length]:1);
       frames[i].style.height=h.toFixed(1)+'px';c.style.width=(h*(c.ar||num(ds.fallbackRatio,.8))).toFixed(1)+'px';c.style.marginTop=((mh-h)*(AL??1)).toFixed(1)+'px'});
