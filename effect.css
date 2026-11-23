@@ -41,3 +41,6 @@ body.sqs-edit-mode-active .fe-block .reel:before{content:'PROJECT REEL';position
 /* grow-out into the post (data-open="grow") */
 .rl-grow{position:fixed;z-index:100000;overflow:hidden;pointer-events:none;transition:top var(--rl-gms,1400ms) cubic-bezier(.76,0,.2,1),left var(--rl-gms,1400ms) cubic-bezier(.76,0,.2,1),width var(--rl-gms,1400ms) cubic-bezier(.76,0,.2,1),height var(--rl-gms,1400ms) cubic-bezier(.76,0,.2,1),border-radius var(--rl-gms,1400ms) ease}
 .rl-grow img{display:block;width:100%;height:100%;object-fit:cover}
+/* phones scrolling sideways as you scroll down (data-mobile="scroll") */
+.rl-phone .rl-track{top:var(--rl-ym,22%);gap:var(--rl-gm,16px);padding:0 var(--rl-pad,6vw)}
+.rl-phone.rl-solo>.content-wrapper{visibility:hidden}

@@ -6,6 +6,7 @@ document.querySelectorAll('.reel').forEach(async row=>{
   const clamp=(v,a=0,b=1)=>Math.min(Math.max(v,a),b);
   const esc=s=>String(s||'').replace(/&amp;/g,'&').replace(/&#39;|&rsquo;/g,'’').replace(/&quot;/g,'"').replace(/<[^>]+>/g,'').trim();
   const isMob=()=>innerWidth<(num(ds.mobileBreak,768))||matchMedia('(hover:none)').matches;
+  const MSCROLL=(ds.mobile||'swipe').toLowerCase()==='scroll';let ph=false;
   let items=[];
   try{const r=await fetch(ds.collection+(ds.collection.includes('?')?'&':'?')+'format=json');items=(await r.json()).items||[]}catch(e){return}
   if((ds.order||'newest')==='oldest')items.reverse();
@@ -36,14 +37,14 @@ document.querySelectorAll('.reel').forEach(async row=>{
   const track=document.createElement('div');track.className='rl-track';layer.append(track);
   const css=(p,v)=>v!=null&&v!==''&&layer.style.setProperty(p,v);
   const px=v=>/^[\d.]+$/.test(String(v))?v+'px':v;
-  css('--rl-y',ds.y&&num(ds.y,14)+'%');css('--rl-gap',ds.gap&&px(ds.gap));css('--rl-pad',ds.padding);
+  css('--rl-y',ds.y&&num(ds.y,14)+'%');css('--rl-ym',ds.yMobile&&num(ds.yMobile,22)+'%');css('--rl-gm',ds.gapMobile&&px(ds.gapMobile));css('--rl-gap',ds.gap&&px(ds.gap));css('--rl-pad',ds.padding);
   css('--rl-radius',ds.radius&&px(ds.radius));css('--rl-border',ds.border);css('--rl-color',ds.textColor);css('--rl-accent',ds.linkColor);
   css('--rl-ts',ds.titleSize);css('--rl-xs',ds.textSize);css('--rl-font',ds.fontName&&'"'+ds.fontName+'", var(--heading-font-font-family,sans-serif)');
   css('--rl-zoom',ds.zoom);css('--rl-wm',ds.widthMobile&&num(ds.widthMobile,78)+'vw');css('--rl-ratio-m',ds.ratioMobile);
   if((ds.uppercase||'on')==='off')css('--rl-case','none');
   const DIM=ds.dim==='off'?null:num(ds.dim,.35);if(DIM!=null)css('--rl-dim',DIM);
   if(INFO==='always')layer.classList.add('rl-always');
-  const H=()=>{const hv=String(ds.height||'').trim();
+  const H=()=>{if(ph)return num(ds.heightMobile,50)*innerHeight/100;const hv=String(ds.height||'').trim();
     if(FIT==='block'&&(!hv||hv==='fill')){const ch=Math.max(0,...[...track.querySelectorAll('.rl-cap')].map(c=>c.offsetHeight+parseFloat(getComputedStyle(c).marginTop)));return Math.max(60,host.clientHeight-ch)}
     return /px$/.test(hv)?parseFloat(hv):num(hv,48)*innerHeight/100};
   const ratio=(()=>{const r=(ds.ratio||'auto').split('/').map(Number);return r.length===2&&r[0]&&r[1]?r[0]/r[1]:null})();
@@ -80,7 +81,7 @@ document.querySelectorAll('.reel').forEach(async row=>{
   const size=()=>{
     const frames=cards.map(c=>c.querySelector('.rl-frame'));
     if(mob){cards.forEach((c,i)=>{c.style.width=c.style.marginTop=frames[i].style.height=''});return}
-    if(FIT==='block'){const o=BLEED?host.getBoundingClientRect().left-sec.getBoundingClientRect().left:0;
+    if(FIT==='block'&&!ph){const o=BLEED?host.getBoundingClientRect().left-sec.getBoundingClientRect().left:0;
       layer.style.left=-o+'px';layer.style.width=(BLEED?sec.clientWidth:host.clientWidth)+'px';if(BLEED&&!ds.padding)layer.style.setProperty('--rl-pad',o+'px')}
     const VARY=on('vary'),AMT=clamp(num(ds.varyAmount,.3),0,.9),AL={top:0,center:.5,middle:.5,bottom:1}[(ds.align||'bottom').toLowerCase()];
     const mh=H();
@@ -93,8 +94,8 @@ document.querySelectorAll('.reel').forEach(async row=>{
   const tick=()=>{cur+=(tgt-cur)*SMOOTH;if(Math.abs(tgt-cur)<.0005)cur=tgt;paint();raf=cur!==tgt?requestAnimationFrame(tick):null};
   const update=()=>{if(mob||!scene.isConnected)return;tgt=clamp((hb()-scene.getBoundingClientRect().top)/innerHeight,0,len);if(!raf)raf=requestAnimationFrame(tick)};
   const mode=()=>{
-    const edit=document.body.classList.contains('sqs-edit-mode-active');const m=isMob();
-    if(m!==mob){mob=m;layer.classList.toggle('rl-inblock',FIT==='block'&&!m);(m||FIT==='section'?sec:host).append(layer);if(m){layer.style.left=layer.style.width=''}layer.classList.toggle('rl-mobile',m);sec.classList.toggle('rl-mobile',m);if(m){track.style.transform='';layer.classList.add('rl-always')}else if(INFO!=='always')layer.classList.remove('rl-always')}
+    const edit=document.body.classList.contains('sqs-edit-mode-active');const sm=isMob(),m=sm&&!MSCROLL,p=sm&&MSCROLL;
+    if(m!==mob||p!==ph){mob=m;ph=p;layer.classList.toggle('rl-inblock',FIT==='block'&&!m&&!p);(m||p||FIT==='section'?sec:host).append(layer);if(m||p){layer.style.left=layer.style.width=''}layer.classList.toggle('rl-phone',p);sec.classList.toggle('rl-phone',p);layer.classList.toggle('rl-mobile',m);sec.classList.toggle('rl-mobile',m);if(m){track.style.transform='';layer.classList.add('rl-always')}else if(INFO!=='always')layer.classList.remove('rl-always')}
     const want=!edit&&!mob;
     if(!want&&scene.isConnected){scene.replaceWith(sec)}
     if(want&&!scene.isConnected){sec.before(scene);scene.append(sec)}

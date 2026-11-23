@@ -24,7 +24,7 @@ Click an image and it grows from its spot to fill the screen, then the blog post
 
 ```html
 <!-- Project Reel: full-screen image at the top of gallery posts -->
-<script src="https://cdn.jsdelivr.net/gh/sq-assets/project-reel@v1.4.0/post.js"
+<script src="https://cdn.jsdelivr.net/gh/sq-assets/project-reel@v1.5.0/post.js"
   data-collections="/gallery"
   data-parallax="0.35"
   data-hide-image="on"
@@ -61,8 +61,8 @@ A blog, one post per project:
 ## Install
 **Footer** (Settings → Developer tools → Code injection → Footer):
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sq-assets/project-reel@v1.4.0/effect.css">
-<script src="https://cdn.jsdelivr.net/gh/sq-assets/project-reel@v1.4.0/effect.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sq-assets/project-reel@v1.5.0/effect.css">
+<script src="https://cdn.jsdelivr.net/gh/sq-assets/project-reel@v1.5.0/effect.js"></script>
 ```
 
 **Code Block** in the section (set the section to fill the screen):
@@ -112,6 +112,8 @@ A blog, one post per project:
 | `data-uppercase` | `off` keeps titles as typed |
 | `data-speed` | Higher = the row moves faster (less scrolling) |
 | `data-hold` | How long it stays pinned at the end, in screens (default 0.3) |
+| `data-mobile` | `swipe` (default) = phones get a swipeable row; `scroll` = phones slide sideways as you scroll down, like desktop |
+| `data-height-mobile`, `data-y-mobile`, `data-gap-mobile` | With `scroll`: image height (% of screen, 50), row position (% from top, 22), gap in px (16) |
 | `data-width-mobile` / `data-ratio-mobile` | Phone card width (% of screen, default 78) and shape (default `4/5`) |
 | `data-mobile-break` | Screen width below which the phone layout is used (default 768) |
 
