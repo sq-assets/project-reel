@@ -24,7 +24,7 @@ Click an image and it grows from its spot to fill the screen, then the blog post
 
 ```html
 <!-- Project Reel: full-screen image at the top of gallery posts -->
-<script src="https://cdn.jsdelivr.net/gh/sq-assets/project-reel@v1.5.2/post.js"
+<script src="https://cdn.jsdelivr.net/gh/sq-assets/project-reel@v1.6.1/post.js"
   data-collections="/gallery"
   data-parallax="0.35"
   data-hide-image="on"
@@ -39,9 +39,13 @@ Click an image and it grows from its spot to fill the screen, then the blog post
 |---|---|
 | `data-collections` | Which blogs get the full-screen image on their posts, comma separated |
 | `data-parallax` | How much slower the image scrolls than the text (`0.35`); `off` = scrolls normally |
+| `data-hero-inset` | Gap in px round the hero image (blank/0 = full-bleed). The top gap starts below your header |
+| `data-hero-radius`, `data-hero-border` | Rounded corners (e.g. `20`) and a border (e.g. `1px solid #383838`) for the hero image |
 | `data-back` | `on` = a "← Back" button on each post. Returns visitors to the same spot in the reel if they came from it, otherwise goes to `data-back-url` |
 | `data-back-text`, `data-back-url` | Button text ("Back") and where it goes (`/`) |
-| `data-back-style` | `nav` (default) = copies your header navigation links (font, size, weight, spacing, caps, colour) and lines up with them; `text` = plain link |
+| `data-back-style` | `nav` (default) = copies your header navigation links (font, size, weight, spacing, caps, colour) and lines up with them; `pill` = nav font in a rounded pill that sits just below the header (on the image when it's framed); `text` = plain link |
+| `data-back-bg`, `data-back-border` | Pill only: background colour and 1px border colour (border defaults to the text colour) |
+| `data-back-below`, `data-back-gap` | `on` = put a `nav`-style link below the header too; gap below the header in px (16) |
 | `data-back-position` | `top-left` (default) or `top-right`, level with your nav links; `bottom-left`, `bottom-right`. On phones, top positions sit just below the header |
 | `data-back-font`, `data-back-font-size`, `data-back-color`, `data-back-letter-spacing`, `data-back-uppercase` (`on`/`off`), `data-back-hover-color` | Optional overrides. Blank = match the nav |
 | `data-back-blend` | `on` = inverts against whatever's behind it (white text recommended) |
@@ -61,8 +65,8 @@ A blog, one post per project:
 ## Install
 **Footer** (Settings → Developer tools → Code injection → Footer):
 ```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sq-assets/project-reel@v1.5.2/effect.css">
-<script src="https://cdn.jsdelivr.net/gh/sq-assets/project-reel@v1.5.2/effect.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/sq-assets/project-reel@v1.6.1/effect.css">
+<script src="https://cdn.jsdelivr.net/gh/sq-assets/project-reel@v1.6.1/effect.js"></script>
 ```
 
 **Code Block** in the section (set the section to fill the screen):
